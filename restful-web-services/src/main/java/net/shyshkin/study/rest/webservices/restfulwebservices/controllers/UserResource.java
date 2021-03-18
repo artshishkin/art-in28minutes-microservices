@@ -3,9 +3,11 @@ package net.shyshkin.study.rest.webservices.restfulwebservices.controllers;
 import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import net.shyshkin.study.rest.webservices.restfulwebservices.services.UserService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,9 +28,16 @@ public class UserResource {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createNewUser(@RequestBody User user) {
+    public ResponseEntity<Object> createNewUser(@RequestBody User user) {
         user.setId(null);
-        userService.save(user);
+        User savedUser = userService.save(user);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .pathSegment("{id}")
+                .buildAndExpand(savedUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
