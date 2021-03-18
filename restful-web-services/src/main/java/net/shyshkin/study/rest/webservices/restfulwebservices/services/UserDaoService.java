@@ -11,7 +11,7 @@ import java.util.Map;
 import static java.time.LocalDate.of;
 
 @Service
-public class UserDaoService {
+public class UserDaoService implements UserService {
 
     private static final Map<Integer, User> userRepository = new HashMap<>(4);
     private static Integer lastId = 0;
@@ -24,10 +24,12 @@ public class UserDaoService {
         lastId = 4;
     }
 
+    @Override
     public List<User> findAll() {
         return new ArrayList<>(userRepository.values());
     }
 
+    @Override
     public User save(User user) {
         Integer id = user.getId();
         if (id == null) {
@@ -38,6 +40,7 @@ public class UserDaoService {
         return user;
     }
 
+    @Override
     public User findOne(int id) {
         return userRepository.get(id);
     }
