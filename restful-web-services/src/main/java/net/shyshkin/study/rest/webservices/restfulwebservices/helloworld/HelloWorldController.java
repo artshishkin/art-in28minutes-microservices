@@ -1,4 +1,4 @@
-package net.shyshkin.study.rest.webservices.restfulwebservices.controllers;
+package net.shyshkin.study.rest.webservices.restfulwebservices.helloworld;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

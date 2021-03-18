@@ -1,4 +1,4 @@
-package net.shyshkin.study.rest.webservices.restfulwebservices.controllers;
+package net.shyshkin.study.rest.webservices.restfulwebservices.helloworld;
 
 import lombok.Data;
 
