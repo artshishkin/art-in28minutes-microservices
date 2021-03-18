@@ -1,5 +1,6 @@
 package net.shyshkin.study.rest.webservices.restfulwebservices.services;
 
+import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,8 @@ public class UserDaoService implements UserService {
 
     @Override
     public User findOne(int id) {
-        return userRepository.get(id);
+        User user = userRepository.get(id);
+        if (user == null) throw new UserNotFoundException(String.format("User with id `%s` not found", id));
+        return user;
     }
 }
