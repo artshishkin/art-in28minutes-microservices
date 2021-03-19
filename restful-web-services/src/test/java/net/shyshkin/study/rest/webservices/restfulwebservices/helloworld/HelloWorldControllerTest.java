@@ -61,4 +61,25 @@ class HelloWorldControllerTest {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isEqualTo("Hello World");
     }
+
+    @ParameterizedTest(name = "[{index}] {0}")
+    @DisplayName("Content Negotiation Test")
+    @CsvSource({
+            "application/xml,<HelloWorldBean><message>Hello World</message></HelloWorldBean>",
+            "application/json,{\"message\":\"Hello World\"}"
+    })
+    void helloWorldBean_contentNegotiation(String mediaType, String expectedResponse) {
+        //given
+        RequestEntity<Void> requestEntity = RequestEntity
+                .get("/hello-world-bean")
+                .accept(MediaType.valueOf(mediaType))
+                .build();
+
+        //when
+        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getBody()).isEqualTo(expectedResponse);
+    }
 }
