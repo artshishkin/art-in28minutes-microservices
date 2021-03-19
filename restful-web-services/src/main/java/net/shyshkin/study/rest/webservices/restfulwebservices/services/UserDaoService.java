@@ -1,6 +1,8 @@
 package net.shyshkin.study.rest.webservices.restfulwebservices.services;
 
+import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.PostNotFoundException;
 import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
+import net.shyshkin.study.rest.webservices.restfulwebservices.model.Post;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import org.springframework.stereotype.Service;
 
@@ -9,21 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.time.LocalDate.of;
-
 @Service
 public class UserDaoService implements UserService {
 
-    private static final Map<Integer, User> userRepository = new HashMap<>(4);
+    private static final Map<Integer, User> userRepository = new HashMap<>();
     private static Integer lastId = 0;
-
-    static {
-        userRepository.put(1, User.builder().id(1).name("Art").birthDate(of(1983, 2, 7)).build());
-        userRepository.put(2, User.builder().id(2).name("Kate").birthDate(of(1983, 2, 13)).build());
-        userRepository.put(3, User.builder().id(3).name("Arina").birthDate(of(2010, 7, 23)).build());
-        userRepository.put(4, User.builder().id(4).name("Nazar").birthDate(of(2016, 6, 1)).build());
-        lastId = 4;
-    }
 
     @Override
     public List<User> findAll() {
@@ -46,5 +38,39 @@ public class UserDaoService implements UserService {
         User user = userRepository.get(id);
         if (user == null) throw new UserNotFoundException(String.format("User with id `%s` not found", id));
         return user;
+    }
+
+    @Override
+    public List<Post> getAllPosts(int userId) {
+        return findOne(userId).getPosts();
+    }
+
+    @Override
+    public Post savePost(Integer userId, Post post) {
+        User user = findOne(userId);
+        post.setUser(user);
+        post.setId(newId());
+        user.getPosts().add(post);
+        return post;
+    }
+
+    @Override
+    public Post findPost(int userId, int postId) {
+        User user = findOne(userId);
+        for (Post post : user.getPosts()) {
+            if (post.getId() == postId)
+                return post;
+        }
+        throw new PostNotFoundException(String.format("Post with id `%d` is not found for user `%d`", postId, userId));
+    }
+
+    private int newId() {
+        int lastIndex = userRepository.values()
+                .stream()
+                .flatMap(user -> user.getPosts().stream())
+                .mapToInt(Post::getId)
+                .max()
+                .orElse(0);
+        return lastIndex + 1;
     }
 }
