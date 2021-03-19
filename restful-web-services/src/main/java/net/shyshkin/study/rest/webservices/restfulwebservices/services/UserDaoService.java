@@ -41,6 +41,12 @@ public class UserDaoService implements UserService {
     }
 
     @Override
+    public User deleteById(int id) {
+        User user = findOne(id);
+        return userRepository.remove(user.getId());
+    }
+
+    @Override
     public List<Post> getAllPosts(int userId) {
         return findOne(userId).getPosts();
     }

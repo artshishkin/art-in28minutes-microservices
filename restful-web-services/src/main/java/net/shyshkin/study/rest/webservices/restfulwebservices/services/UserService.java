@@ -12,6 +12,8 @@ public interface UserService {
 
     User findOne(int id);
 
+    User deleteById(int id);
+
     List<Post> getAllPosts(int userId);
 
     Post savePost(Integer userId, Post post);
