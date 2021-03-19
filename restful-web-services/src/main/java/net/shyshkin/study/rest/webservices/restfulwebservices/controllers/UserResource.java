@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createNewUser(@RequestBody User user) {
+    public ResponseEntity<Object> createNewUser(@Valid @RequestBody User user) {
         user.setId(null);
         User savedUser = userService.save(user);
 

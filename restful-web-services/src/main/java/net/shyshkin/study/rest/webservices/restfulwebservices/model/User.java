@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,11 @@ import java.util.List;
 public class User {
 
     private Integer id;
+
+    @Size(min = 2, max = 255, message = "Name must have from 2 to 255 characters")
     private String name;
+
+    @Past
     private LocalDate birthDate;
 
     @Builder.Default
