@@ -17,7 +17,7 @@ class HelloWorldControllerTest {
     @Autowired
     TestRestTemplate restTemplate;
 
-    @ParameterizedTest(name="[{index}] {arguments}")
+    @ParameterizedTest(name = "[{index}] {arguments}")
     @DisplayName("Should return proper message according to Locale (through Accept-Language header)")
     @CsvSource(
             delimiterString = ";",
@@ -28,7 +28,7 @@ class HelloWorldControllerTest {
                     "ru;Привет, Мир!",
                     "uk;Привіт, Світ!"
             })
-    void helloWorld_internalized(String locale, String expectedMessage) {
+    void helloWorld_internationalized(String locale, String expectedMessage) {
         //given
         RequestEntity<Void> requestEntity = RequestEntity
                 .get("/hello-world")
