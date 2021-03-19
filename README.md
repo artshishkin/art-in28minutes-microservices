@@ -11,3 +11,9 @@ Testing:
     -  `ru` - Rus
     -  `uk` - Ukraine
     -  `<without it>` - default - `en`
+
+#####  38. Step 20 - Configuring Auto Generation of Swagger Documentation
+
+-  `http://localhost:8080/v2/api-docs`
+-  `http://localhost:8080/swagger-ui/index.html`
+
