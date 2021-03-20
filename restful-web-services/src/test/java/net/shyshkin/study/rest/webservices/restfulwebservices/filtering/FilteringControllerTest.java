@@ -83,4 +83,53 @@ class FilteringControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(expectedOutput));
     }
 
+    @Test
+    @DisplayName("When GET fields that are filtered dynamically must be absent")
+    void getSomeBeanDynamic() throws Exception {
+        //when
+        mockMvc.perform(get("/filtering/dynamic"))
+
+                //then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.value1").value("value1"))
+                .andExpect(jsonPath("$.value2").value("value2"))
+                .andExpect(jsonPath("$.value3").doesNotExist());
+    }
+
+    @Test
+    @DisplayName("When POST - fields with Filter switched off must be present")
+    void postSomeBeanDynamic() throws Exception {
+        //given
+        String someBeanContent = "{\"value1\":\"hello1\",\"value2\":\"hello2\",\"value3\":\"hello3\"}";
+        String expectedOutput = "SomeBeanDynamic(value1=hello1, value2=hello2, value3=hello3)";
+
+        //when
+        mockMvc.perform(
+                post("/filtering/dynamic")
+                        .content(someBeanContent)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+
+                //then
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expectedOutput));
+    }
+
+    @Test
+    @DisplayName("When GET List - fields that are filtered dynamically must be absent")
+    void getSomeBeanDynamicList() throws Exception {
+        //when
+        mockMvc.perform(get("/filtering/dynamic-list"))
+
+                //then
+                .andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.[0].value1").value("value11"))
+                .andExpect(jsonPath("$.[0].value2").doesNotExist())
+                .andExpect(jsonPath("$.[0].value3").value("value13"))
+
+                .andExpect(jsonPath("$.[1].value1").value("value21"))
+                .andExpect(jsonPath("$.[1].value2").doesNotExist())
+                .andExpect(jsonPath("$.[1].value3").value("value23"));
+    }
 }
