@@ -1,5 +1,7 @@
 package net.shyshkin.study.rest.webservices.restfulwebservices.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +17,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ApiModel(description = "All details about the user.")
 public class User {
 
     private Integer id;
 
     @Size(min = 2, max = 255, message = "Name must have from 2 to 255 characters")
+    @ApiModelProperty(notes = "Name must have from 2 to 255 characters long")
     private String name;
 
+    @ApiModelProperty(notes = "Birthdate should be in the past")
     @Past
     private LocalDate birthDate;
 

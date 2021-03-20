@@ -16,6 +16,8 @@ import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 
 @RestController
 @RequestMapping("users")
@@ -39,7 +41,10 @@ public class UserResource {
         return resource;
     }
 
-    @PostMapping
+    @PostMapping(
+            consumes = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE},
+            produces = {APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE}
+    )
     public ResponseEntity<Object> createNewUser(@Valid @RequestBody User user) {
         user.setId(null);
         User savedUser = userService.save(user);
