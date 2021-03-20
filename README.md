@@ -17,3 +17,8 @@ Testing:
 -  `http://localhost:8080/v2/api-docs`
 -  `http://localhost:8080/swagger-ui/index.html`
 
+#####  42. Step 23 - Monitoring APIs with Spring Boot Actuator
+
+HAL Browser:
+-  `localhost:8080` -> will redirect to HAL Explorer
+-  insert `/actuator`
