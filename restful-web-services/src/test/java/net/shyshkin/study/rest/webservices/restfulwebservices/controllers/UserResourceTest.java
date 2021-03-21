@@ -2,7 +2,10 @@ package net.shyshkin.study.rest.webservices.restfulwebservices.controllers;
 
 import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.ExceptionResponse;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -32,11 +35,33 @@ class UserResourceTest {
 //        URI uri = MvcUriComponentsBuilder.fromController(UserResource.class).build().toUri();
 
         //when
-        ResponseEntity<Void> responseEntity = restTemplate.postForEntity(uri, newUser, Void.TYPE);
+        ResponseEntity<Void> responseEntity = restTemplate
+                .withBasicAuth("art", "123")
+                .postForEntity(uri, newUser, Void.TYPE);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
+    }
+
+    @ParameterizedTest
+    @DisplayName("When wrong username or password must be UNAUTHORIZED")
+    @ValueSource(strings = {"art", "wrongName"})
+    void createNewUser_whenWrongPassword(String userName) {
+        //given
+        User newUser = User.builder()
+                .name("name")
+                .birthDate(LocalDate.now().minusYears(2))
+                .build();
+        URI uri = URI.create("/users");
+
+        //when
+        ResponseEntity<Void> responseEntity = restTemplate
+                .withBasicAuth(userName, "wrongPassword")
+                .postForEntity(uri, newUser, Void.TYPE);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
@@ -49,7 +74,9 @@ class UserResourceTest {
         URI uri = URI.create("/users");
 
         //when
-        ResponseEntity<ExceptionResponse> responseEntity = restTemplate.postForEntity(uri, newUser, ExceptionResponse.class);
+        ResponseEntity<ExceptionResponse> responseEntity = restTemplate
+                .withBasicAuth("art", "123")
+                .postForEntity(uri, newUser, ExceptionResponse.class);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -74,7 +101,9 @@ class UserResourceTest {
         URI uri = URI.create("/users");
 
         //when
-        ResponseEntity<ExceptionResponse> responseEntity = restTemplate.postForEntity(uri, newUser, ExceptionResponse.class);
+        ResponseEntity<ExceptionResponse> responseEntity = restTemplate
+                .withBasicAuth("art", "123")
+                .postForEntity(uri, newUser, ExceptionResponse.class);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);

@@ -37,7 +37,9 @@ class HelloWorldControllerTest {
                 .build();
 
         //when
-        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate
+                .withBasicAuth("art","123")
+                .exchange(requestEntity, String.class);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -55,7 +57,9 @@ class HelloWorldControllerTest {
                 .build();
 
         //when
-        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate
+                .withBasicAuth("art","123")
+                .exchange(requestEntity, String.class);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -76,7 +80,9 @@ class HelloWorldControllerTest {
                 .build();
 
         //when
-        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate
+                .withBasicAuth("art","123")
+                .exchange(requestEntity, String.class);
 
         //then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
