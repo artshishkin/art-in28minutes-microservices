@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.Post;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import net.shyshkin.study.rest.webservices.restfulwebservices.repositories.UserRepository;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,14 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.ResultMatcher.matchAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
@@ -87,9 +88,9 @@ class PostResourceTest {
                         matchAll(
                                 status().isOk(),
                                 jsonPath("$", IsCollectionWithSize.hasSize(3)),
-                                jsonPath("$.[0].content").value(CoreMatchers.containsString("Content")),
-                                jsonPath("$.[1].content").value(CoreMatchers.containsString("Content")),
-                                jsonPath("$.[2].content").value(CoreMatchers.containsString("Content"))
+                                jsonPath("$.[0].content").value(containsString("Content")),
+                                jsonPath("$.[1].content").value(containsString("Content")),
+                                jsonPath("$.[2].content").value(containsString("Content"))
                         ));
     }
 
@@ -112,5 +113,38 @@ class PostResourceTest {
                                 jsonPath("$.title").value(post.getTitle()),
                                 jsonPath("$.content").value(post.getContent())
                         ));
+    }
+
+    @Test
+    void createNewPost() throws Exception {
+        //given
+        User user = createStubUserWithPosts(0);
+        Integer userId = user.getId();
+        String postJson = "{\"title\":\"Great title\",\"content\":\"Great content\"}";
+
+        //when
+        mockMvc.perform(
+                post("/users/{userId}/posts", userId)
+                        .accept(APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
+                        .content(postJson))
+                //then
+                .andExpect(
+                        matchAll(
+                                status().isCreated(),
+                                content().string(""),
+                                header().string(LOCATION, not(endsWith("/"))),
+                                header().string(LOCATION, containsString("/users/" + userId + "/posts/"))
+                        ));
+
+//        User modifiedUser = userRepository
+//                .findById(userId)
+//                .orElseThrow(() -> new UserNotFoundException(String.format("User with id `%d` not found", userId)));
+//        List<Post> posts = modifiedUser.getPosts();
+//        assertThat(posts).hasSize(1)
+//                .allSatisfy(post -> assertThat(post)
+//                        .hasFieldOrPropertyWithValue("title", "Great title")
+//                        .hasFieldOrPropertyWithValue("content", "Great content")
+//                );
     }
 }
