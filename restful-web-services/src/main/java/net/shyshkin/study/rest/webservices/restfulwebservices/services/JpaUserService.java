@@ -1,51 +1,50 @@
 package net.shyshkin.study.rest.webservices.restfulwebservices.services;
 
+import lombok.RequiredArgsConstructor;
 import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.PostNotFoundException;
 import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.Post;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
+import net.shyshkin.study.rest.webservices.restfulwebservices.repositories.UserRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-@Profile("static-resources")
-public class UserDaoService implements UserService {
+@Profile("!static-resources")
+@RequiredArgsConstructor
+public class JpaUserService implements UserService {
 
-    private static final Map<Integer, User> userRepository = new HashMap<>();
-    private static Integer lastId = 0;
+    private final UserRepository userRepository;
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(userRepository.values());
+        ArrayList<User> users = new ArrayList<>();
+        userRepository.findAll().forEach(users::add);
+        return users;
     }
 
     @Override
     public User save(User user) {
-        Integer id = user.getId();
-        if (id == null) {
-            id = ++lastId;
-            user.setId(id);
-        }
-        userRepository.put(id, user);
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
     public User findOne(int id) {
-        User user = userRepository.get(id);
-        if (user == null) throw new UserNotFoundException(String.format("User with id `%s` not found", id));
-        return user;
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with id `%s` not found", id)));
     }
 
     @Override
     public User deleteById(int id) {
         User user = findOne(id);
-        return userRepository.remove(user.getId());
+        userRepository.delete(user);
+        return null;
     }
 
     @Override
@@ -57,9 +56,15 @@ public class UserDaoService implements UserService {
     public Post savePost(Integer userId, Post post) {
         User user = findOne(userId);
         post.setUser(user);
-        post.setId(newId());
-        user.getPosts().add(post);
-        return post;
+        List<Post> initialPosts = user.getPosts();
+        Set<Integer> initialIndices = initialPosts.stream().map(Post::getId).collect(Collectors.toSet());
+        initialPosts.add(post);
+        User savedUser = userRepository.save(user);
+        return savedUser.getPosts()
+                .stream()
+                .filter(post1 -> !initialIndices.contains(post1.getId()))
+                .findAny()
+                .orElse(post);
     }
 
     @Override
@@ -70,15 +75,5 @@ public class UserDaoService implements UserService {
                 return post;
         }
         throw new PostNotFoundException(String.format("Post with id `%d` is not found for user `%d`", postId, userId));
-    }
-
-    private int newId() {
-        int lastIndex = userRepository.values()
-                .stream()
-                .flatMap(user -> user.getPosts().stream())
-                .mapToInt(Post::getId)
-                .max()
-                .orElse(0);
-        return lastIndex + 1;
     }
 }

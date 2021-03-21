@@ -5,6 +5,7 @@ import net.shyshkin.study.rest.webservices.restfulwebservices.model.Post;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import net.shyshkin.study.rest.webservices.restfulwebservices.services.UserService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 
 @Component
 @RequiredArgsConstructor
+@Profile("static-resources")
 public class BootstrapData implements CommandLineRunner {
 
     private final UserService userService;
