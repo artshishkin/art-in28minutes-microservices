@@ -1,6 +1,7 @@
 package net.shyshkin.study.rest.webservices.restfulwebservices.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.shyshkin.study.rest.webservices.restfulwebservices.exceptions.UserNotFoundException;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.Post;
 import net.shyshkin.study.rest.webservices.restfulwebservices.model.User;
 import net.shyshkin.study.rest.webservices.restfulwebservices.repositories.UserRepository;
@@ -14,10 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser
+@Transactional
 class PostResourceTest {
 
     @Autowired
@@ -137,14 +142,14 @@ class PostResourceTest {
                                 header().string(LOCATION, containsString("/users/" + userId + "/posts/"))
                         ));
 
-//        User modifiedUser = userRepository
-//                .findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException(String.format("User with id `%d` not found", userId)));
-//        List<Post> posts = modifiedUser.getPosts();
-//        assertThat(posts).hasSize(1)
-//                .allSatisfy(post -> assertThat(post)
-//                        .hasFieldOrPropertyWithValue("title", "Great title")
-//                        .hasFieldOrPropertyWithValue("content", "Great content")
-//                );
+        User modifiedUser = userRepository
+                .findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with id `%d` not found", userId)));
+        List<Post> posts = modifiedUser.getPosts();
+        assertThat(posts).hasSize(1)
+                .allSatisfy(post -> assertThat(post)
+                        .hasFieldOrPropertyWithValue("title", "Great title")
+                        .hasFieldOrPropertyWithValue("content", "Great content")
+                );
     }
 }
