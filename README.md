@@ -22,3 +22,22 @@ Testing:
 HAL Browser:
 -  `localhost:8080` -> will redirect to HAL Explorer
 -  insert `/actuator`
+
+#####  46. Step 27 - Versioning RESTful Services - Header and Content Negotiation Approach
+
+ - Media type versioning (a.k.a “content negotiation” or “accept header”)
+   - GitHub
+ - (Custom) headers versioning
+   - Microsoft
+ - URI Versioning
+   - Twitter
+ - Request Parameter versioning 
+   - Amazon
+ - Factors
+  - URI Pollution
+  - Misuse of HTTP Headers
+  - Caching
+  - Can we execute the request on the browser?
+  - API Documentation
+ - No Perfect Solution 
+
