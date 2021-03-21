@@ -38,4 +38,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
+    public void addPost(Post post) {
+        post.setUser(this);
+        posts.add(post);
+    }
+
 }

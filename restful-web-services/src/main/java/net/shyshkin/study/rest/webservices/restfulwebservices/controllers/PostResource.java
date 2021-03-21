@@ -32,7 +32,7 @@ public class PostResource {
     }
 
     @GetMapping("{postId}")
-    public Post retrieveAllPosts(@PathVariable Integer userId, @PathVariable Integer postId) {
+    public Post retrievePostById(@PathVariable Integer userId, @PathVariable Integer postId) {
         return userService.findPost(userId, postId);
     }
 
