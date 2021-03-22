@@ -56,4 +56,17 @@ HAL Browser:
 
 -  curl to `http://localhost:8888/limits-service/default`
 
+#####  138. Step 11 - Create a simple hard coded currency exchange service - V2
+
+-  URL: `http://localhost:8000/currency-exchange/from/USD/to/INR`
+-   Response Structure
+```json
+{
+   "id":10001,
+   "from":"USD",
+   "to":"INR",
+   "conversionMultiple":65.00,
+   "environment":"8000 instance-id"
+}
+```
 
