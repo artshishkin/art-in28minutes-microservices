@@ -52,4 +52,8 @@ HAL Browser:
 -  `git status`
 -  `git commit -m "adding limits-service.yml"`
 
+#####  131. Step 06 - Connect Spring Cloud Config Server to Local Git Repository - V2
+
+-  curl to `http://localhost:8888/limits-service/default`
+
 
