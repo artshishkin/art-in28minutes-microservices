@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: currency-exchange
+  cloud:
+    config:
+      enabled: false
+
+server:
+  error:
+    include-message: always

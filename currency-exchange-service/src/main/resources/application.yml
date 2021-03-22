@@ -2,7 +2,7 @@ spring:
   application:
     name: currency-exchange
   config:
-    import: configserver:http://localhost:8888
+    import: optional:configserver:http://localhost:8888
   datasource:
     url: jdbc:h2:mem:testdb
   jpa:
