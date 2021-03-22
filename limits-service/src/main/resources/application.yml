@@ -3,7 +3,10 @@ spring:
     name: limits-service
   cloud:
     config:
-      enabled: false
+      enabled: true
+  config:
+    import: configserver:http://localhost:8888
+#    import: optional:configserver:http://localhost:8888
 
 limits-service:
   minimum: 2
