@@ -70,3 +70,10 @@ HAL Browser:
 }
 ```
 
+#####  139. Step 12 - Setting up Dynamic Port in the the Response - V2
+
+-  Edit Configuration
+-  Duplicate config `currency-exchange8000`
+-  VM options:
+    -  `-Dserver.port=8001`
+

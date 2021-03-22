@@ -17,12 +17,14 @@ public class ExchangeController {
 
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
     public CurrencyExchange retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
+        String port = environment.getProperty("local.server.port");
+        String appName = environment.getProperty("spring.application.name");
         return CurrencyExchange.builder()
                 .id(10001L)
                 .from(from)
                 .to(to)
                 .conversionMultiple(BigDecimal.valueOf(65.0))
-                .environment(String.format("%s %s", environment.getProperty("server.port"), environment.getProperty("spring.application.name")))
+                .environment(String.format("%s %s", port, appName))
                 .build();
     }
 }
