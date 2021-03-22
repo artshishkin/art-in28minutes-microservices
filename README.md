@@ -41,3 +41,15 @@ HAL Browser:
   - API Documentation
  - No Perfect Solution 
 
+####  Section 6: Microservices with Spring Cloud - V2
+
+#####  129. Step 05 - Installing Git and Creating Local Git Repository - V2
+
+-  `cd C:\Users\Admin\IdeaProjects\Study\in28minutes\MicroservicesTutorial\art-in28minutes-microservices\git-localconfig-repo`
+-  `git init`
+-  `git status`
+-  `git add *`
+-  `git status`
+-  `git commit -m "adding limits-service.yml"`
+
+
