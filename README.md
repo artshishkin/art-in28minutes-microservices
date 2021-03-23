@@ -93,8 +93,16 @@ HAL Browser:
 }
 ```
 
+#####  155. Step 23 - Enabling Discovery Locator with Eureka for Spring Cloud Gateway
 
+Initial
 
+-  `http://localhost:8765/CURRENCY-EXCHANGE/currency-exchange/from/USD/to/INR`
+-  `http://localhost:8765/CURRENCY-CONVERSION/currency-conversion/from/USD/to/INR/quantity/10`
 
+Lower Case
+
+-  `http://localhost:8765/currency-exchange/currency-exchange/from/USD/to/INR`
+-  `http://localhost:8765/currency-conversion/currency-conversion/from/USD/to/INR/quantity/10`
 
 
