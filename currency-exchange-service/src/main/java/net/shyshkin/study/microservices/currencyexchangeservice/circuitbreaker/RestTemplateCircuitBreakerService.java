@@ -17,7 +17,7 @@ public class RestTemplateCircuitBreakerService implements CircuitBreakerService 
     }
 
     @Override
-    @Retry(name = "default")
+    @Retry(name = "sample-api")
     public String retrieveSomeData() {
         log.debug("Sample API call for nonExisting REST service");
         String fakeResult = restTemplate.getForObject("http://localhost:4321/non-existing-url", String.class);

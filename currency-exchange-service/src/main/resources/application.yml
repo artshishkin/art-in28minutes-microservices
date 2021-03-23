@@ -29,6 +29,12 @@ info:
 logging:
   level:
     net.shyshkin: debug
-
+resilience4j:
+  retry:
+    instances:
+      sample-api:
+        maxRetryAttempts: 5
+        waitDuration: 200ms
+#        waitDuration: 'PT0.1S'
 
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ExceptionCircuitBreakerService implements CircuitBreakerService {
 
     @Override
-    @Retry(name = "default")
+    @Retry(name = "sample-api")
     public String retrieveSomeData() {
         log.debug("Sample API call for any method that throws Exception");
         String fakeResult = "Fake Result";
