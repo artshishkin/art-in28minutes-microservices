@@ -25,3 +25,10 @@ info:
     encoding: '@project.build.sourceEncoding@'
   service:
     name: ${spring.application.name}
+
+logging:
+  level:
+    net.shyshkin: debug
+
+
+
