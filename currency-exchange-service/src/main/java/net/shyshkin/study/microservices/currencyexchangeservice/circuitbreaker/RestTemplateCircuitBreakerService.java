@@ -17,12 +17,16 @@ public class RestTemplateCircuitBreakerService implements CircuitBreakerService 
     }
 
     @Override
-    @Retry(name = "sample-api")
+    @Retry(name = "sample-api", fallbackMethod = "hardcodedResponse")
     public String retrieveSomeData() {
         log.debug("Sample API call for nonExisting REST service");
         String fakeResult = restTemplate.getForObject("http://localhost:4321/non-existing-url", String.class);
         log.debug("Result is {}", fakeResult);
         return fakeResult;
+    }
+
+    public String hardcodedResponse(Exception exception) {
+        return "fallback-response";
     }
 
 }

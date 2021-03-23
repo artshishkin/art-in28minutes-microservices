@@ -11,13 +11,17 @@ import org.springframework.stereotype.Service;
 public class ExceptionCircuitBreakerService implements CircuitBreakerService {
 
     @Override
-    @Retry(name = "sample-api")
+    @Retry(name = "sample-api", fallbackMethod = "hardcodedResponse")
     public String retrieveSomeData() {
         log.debug("Sample API call for any method that throws Exception");
         String fakeResult = "Fake Result";
         if (true) throw new RuntimeException("retrieveSomeData method exception");
         log.debug("Result is {}", fakeResult);
         return fakeResult;
+    }
+
+    public String hardcodedResponse(Exception exception) {
+        return "fallback-response";
     }
 
 }
