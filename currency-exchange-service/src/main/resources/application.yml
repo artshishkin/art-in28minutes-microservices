@@ -33,8 +33,10 @@ resilience4j:
   retry:
     instances:
       sample-api:
-        maxRetryAttempts: 5
+        maxRetryAttempts: 6
         waitDuration: 200ms
-#        waitDuration: 'PT0.1S'
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2.0
+        exponentialMaxWaitDuration: 1s
 
 
