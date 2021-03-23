@@ -106,3 +106,11 @@ Lower Case
 -  `http://localhost:8765/currency-conversion/currency-conversion/from/USD/to/INR/quantity/10`
 
 
+#####  157. Step 24 - Exploring Routes with Spring Cloud Gateway
+
+Custom Routes
+
+-  `http://localhost:8765/currency-exchange/from/USD/to/UAH`
+-  `http://localhost:8765/currency-conversion/from/USD/to/UAH/quantity/10`
+-  `http://localhost:8765/currency-conversion-new/from/USD/to/UAH/quantity/10`
+-  `http://localhost:8765/currency-conversion-new-with-segment/from/USD/to/UAH/quantity/10`
