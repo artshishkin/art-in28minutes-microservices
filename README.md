@@ -156,3 +156,33 @@ Remove image from local repository
 -  `docker image rm  artarkatesoft/mynginx:1.0.13`
 Remove unused images
 -  `docker image prune`
+
+#####  173. Step 08 - Playing with Docker Containers
+
+1.  Pause the container
+    -  `docker container pause <container-name/ID>`
+    -  `docker container inspect 890`
+        -  "Status": "paused"
+2.  Unpause the container
+    -  `docker container unpause <container-name/ID>`
+        -  "Status": "running"
+3.  Remove all stopped containers
+    -  `docker container prune`
+4.  Stop
+    -  `docker container stop <ID/name>` -> SIGTERM -> graceful shutdown
+    -  `{"@timestamp":"2021-03-24T15:41:33.680Z","@version":"1","level":"INFO","message":"Shutting down ExecutorService 'applicationTaskExecutor'","logger_name":"org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor","thread_name":"SpringContextShutdownHook"}`
+5.  Kill
+    -  `docker container kill <ID/name>` -> SIGKILL -> immediately terminates the process
+6.  Starting container at startup
+    - add `--restart=always`
+    -  **or** update
+    -  `docker container update --restart always 890`
+    -  `docker container inspect 890`
+        -  `"HostConfig": "RestartPolicy": {"Name": "always","MaximumRetryCount": 0}`
+    -  Restart Docker Desktop
+    -  `docker ps` - must be running
+    -  `docker container update --restart no 890` - to not restart                 
+
+
+
+
