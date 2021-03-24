@@ -138,5 +138,21 @@ BulkHead
 -  `watch -n 0.2 curl http://192.168.1.154:8000/bulk-head`
 Set maxConcurrentCalls to 2 and run watch command from 3 separate windows to make 3 threads of call
      
+####  Section 7: Docker with Microservices using Spring Boot and Spring Cloud - V2
 
+#####  172. Step 07 - Playing with Docker Images
 
+To create new tag of an image
+-  `docker image tag nginx:1.13 artarkatesoft/mynginx:1.0.13`
+-  `docker image tag artarkatesoft/mynginx:1.0.13 artarkatesoft/mynginx:latest`
+To inspect
+-  `docker image inspect artarkatesoft/mynginx:1.0.13`
+To search existing images in registry hub.docker.com
+-  `docker search mynginx`
+-  `docker search --limit 100 artarkatesoft`
+View image history
+-  `docker image history artarkatesoft/beer-order-service`
+Remove image from local repository
+-  `docker image rm  artarkatesoft/mynginx:1.0.13`
+Remove unused images
+-  `docker image prune`
