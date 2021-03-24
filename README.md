@@ -114,3 +114,16 @@ Custom Routes
 -  `http://localhost:8765/currency-conversion/from/USD/to/UAH/quantity/10`
 -  `http://localhost:8765/currency-conversion-new/from/USD/to/UAH/quantity/10`
 -  `http://localhost:8765/currency-conversion-new-with-segment/from/USD/to/UAH/quantity/10`
+
+#####  161. Step 28 - Playing with Circuit Breaker Features of Resilience4j
+
+-  [CircuitBreaker Documentation](https://resilience4j.readme.io/docs/circuitbreaker)
+-  Run this to curl 10 requests per second
+    -  `watch -n 0.1 curl http://localhost:8000/sample-api`
+-  If you run Windows than use another host, wsl (I used Ubuntu WSL) and curl to you IP (find through `ipconfig`)
+    -  `watch -n 0.1 curl http://192.168.1.154:8000/sample-api`
+-  Make sure Firewall settings allow access to your host (create inbound rule or temporarily disable Firewall).
+-  After 10 unsuccessfully calls circuit breaker switches to the OPEN state and does not call method just return fallback result.
+-  In 60 seconds it will try another 10 calls and so on. 
+
+
