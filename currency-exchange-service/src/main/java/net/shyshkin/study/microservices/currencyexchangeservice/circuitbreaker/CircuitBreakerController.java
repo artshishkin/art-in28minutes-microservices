@@ -16,4 +16,9 @@ public class CircuitBreakerController {
         return circuitBreakerService.retrieveSomeData();
     }
 
+    @GetMapping("/rate-limit")
+    public String rateLimit() {
+        return circuitBreakerService.rateLimiter();
+    }
+
 }

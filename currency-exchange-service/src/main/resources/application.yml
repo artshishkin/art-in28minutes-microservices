@@ -33,7 +33,7 @@ resilience4j:
   retry:
     instances:
       sample-api:
-        maxRetryAttempts: 6
+        maxAttempts: 6
         waitDuration: 200ms
         enableExponentialBackoff: true
         exponentialBackoffMultiplier: 2.0
@@ -46,6 +46,15 @@ resilience4j:
         failureRateThreshold: 60
         permittedNumberOfCallsInHalfOpenState: 5
         minimumNumberOfCalls: 20
+  ratelimiter:
+    instances:
+      default:
+        registerHealthIndicator: true
+        allowHealthIndicatorToFail: true
+        limitForPeriod: 10
+        limitRefreshPeriod: 10s
+
+
 
 management.endpoint.health.show-details: always
 management.health.circuitbreakers.enabled: true

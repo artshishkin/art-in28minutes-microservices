@@ -126,6 +126,12 @@ Custom Routes
 -  After 10 unsuccessfully calls circuit breaker switches to the OPEN state and does not call method just return fallback result.
 -  In 60 seconds it will try another 10 calls and so on.
 -  Curl to 
-    -  `http://localhost:8000/actuator/health` 
+    -  `http://localhost:8000/actuator/health`
+    
+#####  163. Step 29 - Exploring Rate Limiting and BulkHead Features of Resilience4j - V2
+
+-  `watch -n 0.7 curl http://192.168.1.154:8000/rate-limit`
+
+     
 
 

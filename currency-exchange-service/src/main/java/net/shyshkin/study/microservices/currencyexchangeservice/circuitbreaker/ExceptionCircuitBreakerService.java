@@ -1,6 +1,7 @@
 package net.shyshkin.study.microservices.currencyexchangeservice.circuitbreaker;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,17 @@ public class ExceptionCircuitBreakerService implements CircuitBreakerService {
 
     public String hardcodedResponse(Exception exception) {
         return "fallback-response";
+    }
+
+    @Override
+    @RateLimiter(name = "default"/*, fallbackMethod = "exceededRateResponse"*/)
+    public String rateLimiter() {
+        log.debug("Calling Request Limit OK");
+        return "request rate OK";
+    }
+
+    public String exceededRateResponse(Exception exception) {
+        return "request rate EXCEEDED";
     }
 
 }
