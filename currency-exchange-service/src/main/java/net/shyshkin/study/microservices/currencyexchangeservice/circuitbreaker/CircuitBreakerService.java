@@ -4,4 +4,6 @@ public interface CircuitBreakerService {
     String retrieveSomeData();
 
     String rateLimiter();
+
+    String bulkHead();
 }

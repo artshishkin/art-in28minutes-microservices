@@ -21,4 +21,9 @@ public class CircuitBreakerController {
         return circuitBreakerService.rateLimiter();
     }
 
+    @GetMapping("/bulk-head")
+    public String bulkHead() {
+        return circuitBreakerService.bulkHead();
+    }
+
 }

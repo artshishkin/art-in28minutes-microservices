@@ -130,8 +130,13 @@ Custom Routes
     
 #####  163. Step 29 - Exploring Rate Limiting and BulkHead Features of Resilience4j - V2
 
+RateLimiter
 -  `watch -n 0.7 curl http://192.168.1.154:8000/rate-limit`
-
+-  without fallbackMethod
+-  `io.github.resilience4j.ratelimiter.RequestNotPermitted: RateLimiter 'default' does not permit further calls`
+BulkHead
+-  `watch -n 0.2 curl http://192.168.1.154:8000/bulk-head`
+Set maxConcurrentCalls to 2 and run watch command from 3 separate windows to make 3 threads of call
      
 
 

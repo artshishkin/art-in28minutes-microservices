@@ -1,5 +1,6 @@
 package net.shyshkin.study.microservices.currencyexchangeservice.circuitbreaker;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +28,31 @@ public class ExceptionCircuitBreakerService implements CircuitBreakerService {
     }
 
     @Override
-    @RateLimiter(name = "default"/*, fallbackMethod = "exceededRateResponse"*/)
+    @RateLimiter(name = "default", fallbackMethod = "exceededRateResponse")
     public String rateLimiter() {
         log.debug("Calling Request Limit OK");
         return "request rate OK";
     }
 
+    @Override
+    @Bulkhead(name = "default", fallbackMethod = "exceededBulkHeadCount")
+    public String bulkHead() {
+        log.debug("Calling bulkHead");
+        try {
+            Thread.sleep(500L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "bulkHead method";
+    }
+
     public String exceededRateResponse(Exception exception) {
         return "request rate EXCEEDED";
+    }
+
+    public String exceededBulkHeadCount(Exception exception) {
+        log.debug("EXCEEDED");
+        return "bulkhead EXCEEDED";
     }
 
 }
