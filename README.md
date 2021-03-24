@@ -124,6 +124,8 @@ Custom Routes
     -  `watch -n 0.1 curl http://192.168.1.154:8000/sample-api`
 -  Make sure Firewall settings allow access to your host (create inbound rule or temporarily disable Firewall).
 -  After 10 unsuccessfully calls circuit breaker switches to the OPEN state and does not call method just return fallback result.
--  In 60 seconds it will try another 10 calls and so on. 
+-  In 60 seconds it will try another 10 calls and so on.
+-  Curl to 
+    -  `http://localhost:8000/actuator/health` 
 
 
