@@ -183,6 +183,36 @@ Remove unused images
     -  `docker ps` - must be running
     -  `docker container update --restart no 890` - to not restart                 
 
+#####  174. Step 09 - Playing with Docker Commands - stats, system
+
+1.  Docker Events
+    -  `docker events`
+    -  we have one container is running with healthchecks
+    -  so we see events from healthchecks
+    -  in another window `docker container stop 890`
+    -  in events tab we see
+        -  container exec_die
+        -  container kill
+        -  container die
+        -  network disconnect
+        -  container stop
+2.  Docker top
+    -  `docker top`        
+    -  UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+    -  root                12148               12128               39                  16:48               ?                   00:00:40            java -Djava.security.egd=file:/dev/./urandom org.springframework.boot.loader.JarLauncher
+3.  Docker stats
+    -  `docker stats`
+    -  CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT    MEM %     NET I/O       BLOCK I/O   PIDS
+    -  89091762b554   crazy_hawking   1.64%     371.7MiB / 9.73GiB   3.73%     1.12kB / 0B   0B / 0B     75
+4.  Limit containers
+    -  start another container with limit of 768MB and CPU 15% (100000 - 100%)
+    -  `docker container run -d -p 8762:8761 -m 768m --cpu-quota 15000  artarkatesoft/art-sfg-mssc-brewery-eureka`
+5.  Docker system
+    -  `docker system df` - disk usage
+    -  `docker system df -v` - disk usage --verbose with detailed information
+    
 
 
 
+
+         
