@@ -218,5 +218,32 @@ Given a Spring Boot fat jar, a buildpack would provide the Java runtime for us.
 This allows us to skip the Dockerfile and get a sensible Docker image automatically.
 -  `./mvnw spring-boot:build-image`
 
+#### Section 8: Kubernetes with Microservices using Docker, Spring Boot and Spring Cloud
+
+#####  193. Step 05 - Deploy Your First Spring Boot Application to Kubernetes Cluster
+
+1.  In Digital Ocean create Kubernetes Cluster `my-first-k8s-cluster`
+2.  Download configuration file `my-first-k8s-cluster-kubeconfig.yaml`
+3.  Deploy application
+    -  `kubectl --kubeconfig="my-first-k8s-cluster-kubeconfig.yaml" create deployment hello-world-rest-api --image=in28min/hello-world-rest-api:0.0.1.RELEASE`
+    -  got the response
+        -  `deployment.apps/hello-world-rest-api created`
+4.  Expose App to the outside world
+    -  `kubectl --kubeconfig="my-first-k8s-cluster-kubeconfig.yaml" expose deployment hello-world-rest-api --type=LoadBalancer --port=8080`
+        -  `service/hello-world-rest-api exposed`
+5.  Kubernetes Dashboard
+    -  Services
+    -  hello-world-rest-api
+        -  curl to  `http://144.126.246.224:8080/`
+            -  {healthy:true}
+        -  curl to  `http://144.126.246.224:8080/hello-world`
+            -  `Hello World V1 7c4sc`
+        -  curl to  `http://144.126.246.224:8080/hello-world-bean`
+            -  `{"message":"Hello World"}`
+               
+
+
+
+
 
          
