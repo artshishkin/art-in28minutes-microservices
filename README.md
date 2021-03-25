@@ -211,8 +211,12 @@ Remove unused images
     -  `docker system df` - disk usage
     -  `docker system df -v` - disk usage --verbose with detailed information
     
+#####  181. Step 15 - Creating Container Image for Currency Exchange Microservice
 
-
+Buildpacks are a tool that provides framework and application dependencies. 
+Given a Spring Boot fat jar, a buildpack would provide the Java runtime for us. 
+This allows us to skip the Dockerfile and get a sensible Docker image automatically.
+-  `./mvnw spring-boot:build-image`
 
 
          
