@@ -6,3 +6,14 @@ services:
   zipkin:
     image: openzipkin/zipkin
     ports: ["9411:9411"]
+
+  #  docker container run -d -p 8000:8000 artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
+  currency-exchange:
+    image: artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
+    ports:
+      - 8000:8000
+    networks:
+      currency-network:
+
+networks:
+  currency-network:
