@@ -27,6 +27,22 @@ services:
       "spring.zipkin.base-url": http://zipkin:9411
     depends_on:
       - naming-server
+      - zipkin
+    networks:
+      currency-network:
+
+  #  docker container run -d -p 8100:8100 artarkatesoft/art-in28m-currency-conversion-service:0.0.1-SNAPSHOT
+  currency-conversion:
+    image: artarkatesoft/art-in28m-currency-conversion-service:0.0.1-SNAPSHOT
+    ports:
+      - 8100:8100
+    environment:
+      "eureka.client.service-url.defaultZone": http://naming-server:8761/eureka
+      "spring.zipkin.base-url": http://zipkin:9411
+    depends_on:
+      - naming-server
+      - currency-exchange
+      - zipkin
     networks:
       currency-network:
 
