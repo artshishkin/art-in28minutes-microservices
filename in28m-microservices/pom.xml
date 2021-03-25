@@ -24,10 +24,12 @@
         <module>api-gateway</module>
     </modules>
 
-
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.2</spring-cloud.version>
+        <docker.image.prefix>artarkatesoft</docker.image.prefix>
+        <docker.image.name>art-in28m-${project.artifactId}</docker.image.name>
+        <docker.skip>true</docker.skip>
     </properties>
     <dependencies>
         <dependency>
@@ -85,6 +87,7 @@
                     <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                     <layers>
                         <enabled>true</enabled>
+                        <includeLayerTools>true</includeLayerTools>
                     </layers>
                     <excludes>
                         <exclude>
@@ -94,7 +97,68 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.33.0</version>
+                <configuration>
+                    <!--<dockerHost>unix:///var/run/docker.sock</dockerHost>-->
+                    <!--<dockerHost>http://192.168.1.41:2375</dockerHost>-->
+                    <!--<dockerHost>tcp://localhost:2375</dockerHost>-->
+                    <verbose>true</verbose>
+                    <containerNamePattern>%a</containerNamePattern>
+                    <images>
+                        <image>
+                            <name>${docker.image.prefix}/${docker.image.name}</name>
+                            <alias>${docker.image.name}</alias>
+                            <build>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <dockerFile>Dockerfile</dockerFile>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dockerbuild</id>
+            <activation>
+                <file>
+                    <exists>src/main/docker/Dockerfile</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <!--   push to docker with release-->
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>push-to-docker</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
