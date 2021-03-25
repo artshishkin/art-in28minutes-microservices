@@ -29,7 +29,7 @@ services:
       currency-network:
 
   naming-server:
-    image: artarkatesoft/art-in28m-naming-server:0.0.1-SNAPSHOT
+    image: artarkatesoft/art-in28m-naming-server:${MICROSERVICES_IMAGE_VERSION}
     mem_limit: 700m
     ports:
       - 8761:8761
@@ -38,7 +38,7 @@ services:
 
   #  docker container run -d -p 8000:8000 artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
   currency-exchange:
-    image: artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
+    image: artarkatesoft/art-in28m-currency-exchange-service:${MICROSERVICES_IMAGE_VERSION}
     ports:
       - 8000:8000
     environment:
@@ -57,7 +57,7 @@ services:
 
   #  docker container run -d -p 8100:8100 artarkatesoft/art-in28m-currency-conversion-service:0.0.1-SNAPSHOT
   currency-conversion:
-    image: artarkatesoft/art-in28m-currency-conversion-service:0.0.1-SNAPSHOT
+    image: artarkatesoft/art-in28m-currency-conversion-service:${MICROSERVICES_IMAGE_VERSION}
     ports:
       - 8100:8100
     environment:
@@ -76,7 +76,7 @@ services:
 
   #  docker container run -d -p 8765:8765 artarkatesoft/art-in28m-api-gateway:0.0.1-SNAPSHOT
   api-gateway:
-    image: artarkatesoft/art-in28m-api-gateway:0.0.1-SNAPSHOT
+    image: artarkatesoft/art-in28m-api-gateway:${MICROSERVICES_IMAGE_VERSION}
     ports:
       - 8765:8765
     environment:
