@@ -46,5 +46,21 @@ services:
     networks:
       currency-network:
 
+  #  docker container run -d -p 8765:8765 artarkatesoft/art-in28m-api-gateway:0.0.1-SNAPSHOT
+  api-gateway:
+    image: artarkatesoft/art-in28m-api-gateway:0.0.1-SNAPSHOT
+    ports:
+      - 8765:8765
+    environment:
+      "eureka.client.service-url.defaultZone": http://naming-server:8761/eureka
+      "spring.zipkin.base-url": http://zipkin:9411
+    depends_on:
+      - naming-server
+      - currency-exchange
+      - currency-conversion
+      - zipkin
+    networks:
+      currency-network:
+
 networks:
   currency-network:
