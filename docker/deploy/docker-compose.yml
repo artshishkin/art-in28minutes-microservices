@@ -6,12 +6,27 @@ services:
   zipkin:
     image: openzipkin/zipkin
     ports: ["9411:9411"]
+    networks:
+      currency-network:
+
+  naming-server:
+    image: artarkatesoft/art-in28m-naming-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - 8761:8761
+    networks:
+      currency-network:
 
   #  docker container run -d -p 8000:8000 artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
   currency-exchange:
     image: artarkatesoft/art-in28m-currency-exchange-service:0.0.1-SNAPSHOT
     ports:
       - 8000:8000
+    environment:
+      "eureka.client.service-url.defaultZone": http://naming-server:8761/eureka
+      "spring.zipkin.base-url": http://zipkin:9411
+    depends_on:
+      - naming-server
     networks:
       currency-network:
 
