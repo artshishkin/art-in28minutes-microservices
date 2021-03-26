@@ -241,9 +241,55 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
         -  curl to  `http://144.126.246.224:8080/hello-world-bean`
             -  `{"message":"Hello World"}`
                
+#####  195. Step 06 - Quick Look at Kubernetes Concepts - Pods, Replica Sets and Deployment
+
+-  To simplify connection to Digital Ocean Kubernetes 
+    -  modify `my-first-k8s-cluster-kubeconfig.yaml` -> `my-first-k8s-cluster-kubeconfig/config`
+    -  `cd ./my-first-k8s-cluster-kubeconfig` 
+    -  `kubectl --kubeconfig="config" version` - test connection
+    -  add `--kubeconfig="config"` to every request
+    -  `kubectl --kubeconfig="config" get nodes`
+-  Get events
+    -  `kubectl --kubeconfig="config" get events`
+        -  `No resources found in default namespace` 
+    -  `kubectl --kubeconfig="config" get events -A`
+    -  `kubectl --kubeconfig="config" get events --all-namespaces=true`
+        -  **BUT**
+        -  `No resources found` - WTF?
+    -  `kubectl --kubeconfig="config" delete deployments --all`
+        -  `deployment.apps "hello-world-rest-api" deleted`
+    -   recreate deployment "hello-world-rest-api"
+    -  `kubectl --kubeconfig="config" get events -A`
+    
+| NAMESPACE |   LAST SEEN   | TYPE |     REASON |              OBJECT                                       | MESSAGE |
+| --- | --- | --- | --- | --- | --- |
+| default |     2m1s        | Normal |   Killing |             pod/hello-world-rest-api-687d9c7bc7-7c4sc    | Stopping container hello-world-rest-api |
+| default |     52s         | Normal |   Scheduled |           pod/hello-world-rest-api-687d9c7bc7-qrwpq    | Successfully assigned default/hello-world-rest-api-687d9c7bc7-qrwpq to pool-657zl26t9-8qodd |
+| default |     51s         | Normal |   Pulled |              pod/hello-world-rest-api-687d9c7bc7-qrwpq    | Container image "in28min/hello-world-rest-api:0.0.1.RELEASE" already present on machine |
+| default |     51s         | Normal |   Created |             pod/hello-world-rest-api-687d9c7bc7-qrwpq    | Created container hello-world-rest-api |
+| default |     51s         | Normal |   Started |             pod/hello-world-rest-api-687d9c7bc7-qrwpq    | Started container hello-world-rest-api |
+| default |     52s         | Normal |   SuccessfulCreate |    replicaset/hello-world-rest-api-687d9c7bc7   | Created pod: hello-world-rest-api-687d9c7bc7-qrwpq |
+| default |     52s         | Normal |   ScalingReplicaSet |   deployment/hello-world-rest-api              | Scaled up replica set hello-world-rest-api-687d9c7bc7 to 1 |
+
+-  Get pods
+    -  `kubectl --kubeconfig="config" get pods`        
+        -  NAME                                    READY   STATUS    RESTARTS   AGE
+        -  hello-world-rest-api-687d9c7bc7-qrwpq   1/1     Running   0          7m35s    
+-  Get ReplicaSet
+    -  `kubectl --kubeconfig="config" get replicasets` - plural or singular
+    -  `kubectl --kubeconfig="config" get replicaset` 
+        -  NAME                              DESIRED   CURRENT   READY   AGE
+        -  hello-world-rest-api-687d9c7bc7   1         1         1       8m26s
+-  Get deployment
+    -  `kubectl --kubeconfig="config" get deployments` - plural or singular
+        -  NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+        -  hello-world-rest-api   1/1     1            1           11m
+-  Get service
+    -  `kubectl --kubeconfig="config" get services` - plural or singular
+    -  `kubectl --kubeconfig="config" get service` 
+        -  NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)          AGE
+        -  hello-world-rest-api   LoadBalancer   10.245.75.88   144.126.246.224   8080:30867/TCP   11h
+        -  kubernetes             ClusterIP      10.245.0.1     <none>            443/TCP          12h
 
 
-
-
-
-         
+                
