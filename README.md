@@ -305,6 +305,41 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
 -  Pods can be from the different applications or the same app
 -  `kubectl --kubeconfig="config" describe pod hello-world-rest-api-687d9c7bc7-qrwpq`    
     
-    
-    
+#####  197. Step 08 - Understanding ReplicaSets in Kubernetes
+
+1.  Get ReplicaSets
+    -  `kubectl --kubeconfig="config" get replicaset`
+    -  `kubectl --kubeconfig="config" get replicasets`
+    -  `kubectl --kubeconfig="config" get rs`
+2.  ReplicaSet monitors number of Pods 
+    -  `kubectl --kubeconfig="config" get pods -o wide`
+        -  `hello-world-rest-api-687d9c7bc7-qrwpq   1/1     Running   0          3h56m   10.244.1.230   pool-657zl26t9-8qodd   <none>           <none>`
+    -  `kubectl --kubeconfig="config" delete pods hello-world-rest-api-687d9c7bc7-qrwpq`
+        - `pod "hello-world-rest-api-687d9c7bc7-qrwpq" deleted`
+        -  **BUT**
+    -  `kubectl --kubeconfig="config" get pods -o wide`
+        -  `hello-world-rest-api-687d9c7bc7-bnnkg   1/1     Running   0          2m14s   10.244.0.98   pool-657zl26t9-8qod0   <none>           <none>`
+        -  **another pod has been started**
+3.  Scaling Pods
+    -  `kubectl --kubeconfig="config" scale  deployment hello-world-rest-api --replicas=3`
+    -  `kubectl --kubeconfig="config" get pods`
+        -  NAME                                    READY   STATUS    RESTARTS   AGE
+        -  hello-world-rest-api-687d9c7bc7-bnnkg   1/1     Running   0          11m
+        -  hello-world-rest-api-687d9c7bc7-gsx5w   1/1     Running   0          27s
+        -  hello-world-rest-api-687d9c7bc7-lmbvd   1/1     Running   0          27s        
+    -  test it
+        -  curl `http://144.126.246.224:8080/hello-world` many times
+            -  Hello World  V1 gsx5w
+            -  Hello World  V1 lmbvd
+            -  Hello World  V1 bnnkg
+        -  `watch -n 0.1 curl http://144.126.246.224:8080/hello-world`
+    -  `kubectl --kubeconfig="config" get rs`
+        -  NAME                              DESIRED   CURRENT   READY   AGE
+        -  hello-world-rest-api-687d9c7bc7   3         3         3       4h31m
+    -  `kubectl --kubeconfig="config" get event --sort-by=.metadata.creationTimestamp`
+4.  ReplicaSet Description
+    -  `kubectl --kubeconfig="config" explain replicaset`              
+        
+        
+        
                    
