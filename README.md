@@ -339,7 +339,58 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  `kubectl --kubeconfig="config" get event --sort-by=.metadata.creationTimestamp`
 4.  ReplicaSet Description
     -  `kubectl --kubeconfig="config" explain replicaset`              
-        
-        
-        
-                   
+
+#####  198. Step 09 - Understanding Deployment in Kubernetes        
+
+1.  View ReplicaSet
+    -  `kubectl --kubeconfig="config" get rs -o wide`
+        -  NAME                              DESIRED   CURRENT   READY   AGE     CONTAINERS             IMAGES                                       SELECTOR
+        -  hello-world-rest-api-687d9c7bc7   3         3         3       5h53m   hello-world-rest-api   in28min/hello-world-rest-api:0.0.1.RELEASE   app=hello-world-rest-api,pod-template-hash=687d9c7bc7
+2.  Deploy fake image
+    -  `kubectl --kubeconfig="config" set image deployment hello-world-rest-api hello-world-rest-api=DUMMY_IMAGE:TEST`
+    -  `deployment.apps/hello-world-rest-api image updated`
+    -  `kubectl --kubeconfig="config" get rs -o wide`    
+        -  NAME                              DESIRED   CURRENT   READY   AGE     CONTAINERS             IMAGES                                       SELECTOR
+        -  hello-world-rest-api-687d9c7bc7   3         3         3       6h20m   hello-world-rest-api   in28min/hello-world-rest-api:0.0.1.RELEASE   app=hello-world-rest-api,pod-template-hash=687d9c7bc7
+        -  hello-world-rest-api-84d8799896   1         1         0       16m     hello-world-rest-api   DUMMY_IMAGE:TEST                             app=hello-world-rest-api,pod-template-hash=84d8799896        
+    -  `kubectl --kubeconfig="config" get pods`
+        -  3 pods OK and 1 InvalidImageName
+        -  `hello-world-rest-api-84d8799896-sj8kz   0/1     InvalidImageName   0          19m`
+    -  `kubectl --kubeconfig="config" describe pod hello-world-rest-api-84d8799896-sj8kz`
+        -  `Failed to apply default image tag "DUMMY_IMAGE:TEST": couldn't parse image reference "DUMMY_IMAGE:TEST": invalid reference format: repository name must be lowercase`
+3.  Events while deploy fake image
+    -  ` kubectl --kubeconfig="config" get event --sort-by=.metadata.creationTimestamp`
+        -  `5m7s        Warning   Failed              pod/hello-world-rest-api-84d8799896-sj8kz    Error: InvalidImageName`
+    -  Events
+        1.  Deployment said ReplicaSet to scale up: `Scaled up replica set hello-world-rest-api-84d8799896 to 1`
+        2.  ReplicaSet created Pod: `Created pod: hello-world-rest-api-84d8799896-sj8kz`
+        3.  Pod was assigned to pool: `Successfully assigned default/hello-world-rest-api-84d8799896-sj8kz to pool-657zl26t9-8qod1`
+        4.  Pod InspectFailed: `Failed to apply default image tag "DUMMY_IMAGE:TEST": couldn't parse image reference "DUMMY_IMAGE:TEST": invalid reference format: repository name mus`  
+        5.  Pod failed to deploy: `Error: InvalidImageName`
+4.  Deploy correct image
+    -  `kubectl --kubeconfig="config" set image deployment hello-world-rest-api hello-world-rest-api=in28min/hello-world-rest-api:0.0.2.RELEASE`
+        -  `deployment.apps/hello-world-rest-api image updated`
+        -  NAME                              DESIRED   CURRENT   READY   AGE     CONTAINERS             IMAGES                                       SELECTOR
+        -  hello-world-rest-api-687d9c7bc7   0         0         0       6h55m   hello-world-rest-api   in28min/hello-world-rest-api:0.0.1.RELEASE   app=hello-world-rest-api,pod-template-hash=687d9c7bc7
+        -  hello-world-rest-api-7ddff5dfc6   3         3         3       55s     hello-world-rest-api   in28min/hello-world-rest-api:0.0.2.RELEASE   app=hello-world-rest-api,pod-template-hash=7ddff5dfc6
+        -  hello-world-rest-api-84d8799896   0         0         0       51m     hello-world-rest-api   DUMMY_IMAGE:TEST                             app=hello-world-rest-api,pod-template-hash=84d8799896
+    -  `kubectl --kubeconfig="config" get pods`
+        -  NAME                                    READY   STATUS              RESTARTS   AGE
+        -  hello-world-rest-api-687d9c7bc7-8jwmm   1/1     Running             0          3s
+        -  hello-world-rest-api-687d9c7bc7-l9h94   0/1     ContainerCreating   0          1s
+        -  hello-world-rest-api-7ddff5dfc6-jfhgz   1/1     Running             0          4m21s
+        -  hello-world-rest-api-7ddff5dfc6-m8svc   0/1     Terminating         0          4m4s
+        -  hello-world-rest-api-7ddff5dfc6-n4gng   1/1     Running             0          4m11s
+5.  Default deployment strategy is **ROLLING UPDATE**
+    -  1 pod at a time
+    -  guaranties Zero-time downtime update  
+
+
+
+
+
+
+
+
+
+                       
