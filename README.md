@@ -385,7 +385,20 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  1 pod at a time
     -  guaranties Zero-time downtime update  
 
+#####  200. Step 11 - Understanding Services in Kubernetes
 
+-  `kubectl --kubeconfig="config" get pods -o wide`
+    -  every pod has IP
+-  ` kubectl --kubeconfig="config" delete pod hello-world-rest-api-7ddff5dfc6-lbppd`
+    -  New Pod: ContainerCreating -> Running
+    -  Old Pod: Terminating -> <disapear>
+    -  new pod has new IP
+-  In Google Cloud Platform LoadBalancer was created for us to balance load among pods
+-  `kubectl --kubeconfig="config" get services`
+    -  NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP       PORT(S)          AGE
+    -  hello-world-rest-api   LoadBalancer   10.245.75.88   144.126.246.224   8080:30867/TCP   18h
+    -  kubernetes             ClusterIP      10.245.0.1     <none>            443/TCP          19h    
+        
 
 
 
