@@ -291,5 +291,20 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
         -  hello-world-rest-api   LoadBalancer   10.245.75.88   144.126.246.224   8080:30867/TCP   11h
         -  kubernetes             ClusterIP      10.245.0.1     <none>            443/TCP          12h
 
+#####  196. Step 07 - Understanding Pods in Kubernetes
 
-                
+-  `kubectl --kubeconfig="config" get pods -o wide`
+
+| NAME                                    | READY   | STATUS    | RESTARTS   | AGE    | IP             | NODE                   | NOMINATED NODE   | READINESS GATES |
+| hello-world-rest-api-687d9c7bc7-qrwpq   | 1/1     | Running   | 0          | 134m   | 10.244.1.230   | pool-657zl26t9-8qodd   | <none>           | <none> |
+
+    -  READY - 1/1 - 1 container in 1 pod / containers talk to each other using localhost
+    -  IP - address of pod  
+
+-  `kubectl --kubeconfig="config" explain pods`
+-  Pods can be from the different applications or the same app
+-  `kubectl --kubeconfig="config" describe pod hello-world-rest-api-687d9c7bc7-qrwpq`    
+    
+    
+    
+                   
