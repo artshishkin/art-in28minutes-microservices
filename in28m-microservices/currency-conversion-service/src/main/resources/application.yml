@@ -1,8 +1,8 @@
 spring:
   application:
     name: currency-conversion
-  config:
-    import: optional:configserver:http://localhost:8888
+#  config:
+#    import: optional:configserver:http://localhost:8888
   sleuth:
     sampler:
       probability: 1.0
@@ -10,8 +10,8 @@ server:
   port: 8100
 
 exchange-service:
-  host: ''
-#  host: http://localhost:8000
+#  host: ''
+  host: ${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000
   path: /currency-exchange/from/{from}/to/{to}
 
 eureka:
@@ -26,3 +26,14 @@ info:
     encoding: '@project.build.sourceEncoding@'
   service:
     name: ${spring.application.name}
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
