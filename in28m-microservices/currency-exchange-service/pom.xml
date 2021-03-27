@@ -5,7 +5,7 @@
     <parent>
         <groupId>net.shyshkin.study.microservices</groupId>
         <artifactId>in28m-microservices</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1-k8s-SNAPSHOT</version>
     </parent>
     <artifactId>currency-exchange-service</artifactId>
     <name>currency-exchange-service</name>
@@ -14,10 +14,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
         <dependency>
@@ -42,16 +38,7 @@
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
     </dependencies>
