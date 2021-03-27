@@ -399,8 +399,14 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  hello-world-rest-api   LoadBalancer   10.245.75.88   144.126.246.224   8080:30867/TCP   18h
     -  kubernetes             ClusterIP      10.245.0.1     <none>            443/TCP          19h    
         
+#####  202. Step 13 - Understanding Kubernetes Architecture - Master Node and Nodes
 
-
+-  `kubectl --kubeconfig="config" get componentstatuses`
+    -  NAME                 STATUS    MESSAGE             ERROR
+    -  controller-manager   Healthy   ok
+    -  scheduler            Healthy   ok
+    -  etcd-0               Healthy   {"health":"true"}
+-  etcd - Distributed Database
 
 
 
