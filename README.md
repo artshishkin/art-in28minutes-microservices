@@ -438,5 +438,39 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  service `currency-conversion` -> Kubernetes creates CURRENCY_CONVERSION_SERVICE_HOST
     -  service `any-name` -> Kubernetes creates ANY_NAME_SERVICE_HOST
                 
+#####  209. Step 17 - Creating Declarative Configuration Kubernetes YAML for Microservices
+
+1.  Read current configurations
+    -  `kubectl --kubeconfig="config" get deployment currency-exchange -o yaml >> currency-exchange-deployment-read.yaml`
+    -  got content for [currency-exchange-deployment-read.yaml](docker/digital-ocean-k8s/currency-exchange-deployment-read.yaml)
+    -  `kubectl --kubeconfig="config" get service currency-exchange -o yaml >> currency-exchange-service.yaml`
+    -  got [currency-exchange-service.yaml](docker\digital-ocean-k8s\currency-exchange-service.yaml)
+2.  Create new deployment configuration
+    -  merge two files into [currency-exchange-deployment.yaml](docker/digital-ocean-k8s/currency-exchange-deployment.yaml)
+    -  modify replicas to **2**
+3.  Compare configurations
+    -  cd to the location of [currency-exchange-deployment.yaml](docker/digital-ocean-k8s/currency-exchange-deployment.yaml)
+        -  `cd C:\Users\Admin\IdeaProjects\Study\in28minutes\MicroservicesTutorial\art-in28minutes-microservices\docker\digital-ocean-k8s`
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" diff -f currency-exchange-deployment.yaml`
+        -  `error: failed to run "diff": executable file not found in %PATH%`
+    -  `choco install diffutils`
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" diff -f currency-exchange-deployment.yaml`
+        -  ...
+        -  `-  replicas: 1`
+        -  `+  replicas: 2`
+        -  ...
+4.  Deploy new configuration
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" apply -f currency-exchange-deployment.yaml`
+        -  `Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply 
+            deployment.apps/currency-exchange configured`
+        -  `Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+            service/currency-exchange configured`
+        -  Do not worry about them right now
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get pods`  
+        -  currency-exchange-66b7664d5d-l75dr     1/1     Running   0          4h21m
+        -  currency-exchange-66b7664d5d-ql664     1/1     Running   0          3m20s    
+5.  Test it
+    -  `watch -n 0.5 curl http://174.138.102.120:8100/currency-conversion/from/USD/to/UAH/quantity/10` (through Ubuntu WSL)
+    -  view different hostname in environment field
 
                        
