@@ -408,8 +408,35 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  etcd-0               Healthy   {"health":"true"}
 -  etcd - Distributed Database
 
+#####  208. Step 16 - Deploy Microservices to Kubernetes & Understand Service Discovery
 
-
-
+1.  Create deployment `currency-exchange`
+    -  `kubectl --kubeconfig="config" create deployment currency-exchange --image=artarkatesoft/art-in28m-currency-exchange-service:0.0.1-k8s-SNAPSHOT`
+2.  Open port 8000
+    -  `kubectl --kubeconfig="config" expose deployment currency-exchange --type=LoadBalancer --port=8000`
+3.  List running services
+    -  `kubectl --kubeconfig="config" get svc` / `get services`
+4.  List pods
+    -  `kubectl --kubeconfig="config" get po` / `get pods`    
+5.  List ReplicaSets
+    -  `kubectl --kubeconfig="config" get rs` / `get replicaset`
+6.  List all that was created
+    -  `kubectl --kubeconfig="config" get all`
+7.  Curl to service by using external IP
+    -  `curl http://64.225.94.53:8000/currency-exchange/from/USD/to/UAH`    
+        -  `curl http://64.225.94.53:8000/currency-exchange/from/USD/to/UAH
+            {"id":10002,"from":"USD","to":"UAH","conversionMultiple":27.69,"environment":"8000 currency-exchange v1-k8s currency-exchange-66b7664d5d-l75dr "}`
+8.  Deploy `currency-conversion` service
+    -  `kubectl --kubeconfig="config" create deployment currency-conversion --image=artarkatesoft/art-in28m-currency-conversion-service:0.0.1-k8s-SNAPSHOT`
+    -  `kubectl --kubeconfig="config" expose deployment currency-conversion --type=LoadBalancer --port=8100`
+    -  `kubectl --kubeconfig="config" get svc`
+    -  `kubectl --kubeconfig="config" get svc --watch`
+    -  `curl http://174.138.102.120:8100/currency-conversion/from/USD/to/UAH/quantity/10`
+        -  `{"id":10002,"from":"USD","to":"UAH","conversionMultiple":27.69,"quantity":10,"totalCalculatedAmount":276.90,"environment":"8000 currency-exchange v1-k8s currency-exchange-66b7664d5d-l75dr "}`
+9.  Matching Environment variables
+    -  service `currency-exchange` -> Kubernetes creates CURRENCY_EXCHANGE_SERVICE_HOST            
+    -  service `currency-conversion` -> Kubernetes creates CURRENCY_CONVERSION_SERVICE_HOST
+    -  service `any-name` -> Kubernetes creates ANY_NAME_SERVICE_HOST
+                
 
                        
