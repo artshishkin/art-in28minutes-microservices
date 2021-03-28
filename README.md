@@ -473,4 +473,25 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  `watch -n 0.5 curl http://174.138.102.120:8100/currency-conversion/from/USD/to/UAH/quantity/10` (through Ubuntu WSL)
     -  view different hostname in environment field
 
-                       
+#####  212. Step 20 - Deploying Microservices using Kubernetes YAML Configuration
+
+1.  Delete old deployments 
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" delete all -l app=currency-exchange`
+        -  pod "currency-exchange-66b7664d5d-l75dr" deleted
+        -  pod "currency-exchange-66b7664d5d-ql664" deleted
+        -  service "currency-exchange" deleted
+        -  deployment.apps "currency-exchange" deleted
+        -  replicaset.apps "currency-exchange-66b7664d5d" deleted
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" delete all -l app=currency-conversion`
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get all` - ensure there is nothing present 
+2.  Deploy microservice
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" apply -f currency-exchange-deployment.yaml`   
+        -  deployment.apps/currency-exchange created
+        -  service/currency-exchange created
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get all`
+    -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get svc --watch`
+
+
+
+
+                           
