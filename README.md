@@ -562,11 +562,35 @@ In order to run KubeCtl commands without `--kubeconfig` parameter we can set def
     -  `kubectl apply -f currency-exchange-deployment.yaml`
     -  in watch window we see 500 Error - for a short period of time
 
+##### 218. Step 26 - Configuring Liveness and Readiness Probes for Microservices with K8S
 
-
-
-
-
+-  Kubernetes uses probes to check the health of microservice:
+    -  if readiness probe is not successful, no traffic is sent
+    -  if liveness probe is not successful, pod is restarted
+-  Spring Boot Actuator (>=2.3) provides in-build readiness and liveness probes:
+    -  `/health/readiness`
+    -  `/health/liveness`
+-  We have enabled probes in application.yml
+```yaml
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+```
+-  Curl to liveness and readiness endpoints
+    -  `kubectl get svc` - to get external IP
+    -  browse to `http://68.183.243.193:8000/actuator/health/liveness` 
+    -  browse to `http://68.183.243.193:8000/actuator/health/readiness` 
+-  Test downtime while deploying
+    -  `watch -n 0.1 curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
+    -  `kubectl apply -f currency-exchange-deployment.yaml`
+    -  in watch window we see **NO 500 Error**
 
 
 
