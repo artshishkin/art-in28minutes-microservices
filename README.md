@@ -520,4 +520,49 @@ In order to run KubeCtl commands without `--kubeconfig` parameter we can set def
         -  `curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
         -  all ok
         
+#####  215. Step 23 - Understanding Centralized Configuration in Kubernetes - Config Maps
+
+-  `kubectl create configmap currency-conversion --from-literal=EXCHANGE_SERVICE_HOST=http://currency-exchange:8000`
+    -  `configmap/currency-conversion created`
+-  `kubectl get configmap` - or `get cm`
+-  `kubectl get cm currency-conversion`
+-  `kubectl get cm currency-conversion -o yaml`
+-  `kubectl get cm currency-conversion -o yaml >> currency-conversion-configmap.yaml` -> to get [currency-conversion-configmap.yaml](docker\digital-ocean-k8s\currency-conversion-configmap.yaml)
+-  delete unnecessary fields
+-  add it to [currency-conversion-deployment.yaml](docker\digital-ocean-k8s\currency-conversion-deployment.yaml)
+-  `kubectl apply -f currency-conversion-deployment.yaml`
+    -  Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                            
