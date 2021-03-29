@@ -592,13 +592,35 @@ management:
     -  `kubectl apply -f currency-exchange-deployment.yaml`
     -  in watch window we see **NO 500 Error**
 
+#####  219. Step 27 - Autoscaling Microservices with Kubernetes
 
-
-
-
-
-
-
+1.  Create Auto Scaling
+    -  `kubectl autoscale deployment currency-exchange --min=1 --max=3 --cpu-percent=5` (in production ~ `--cpu-percent=70`)
+        -  `horizontalpodautoscaler.autoscaling/currency-exchange autoscaled`
+    -  `kubectl get hpa`
+        -  NAME                REFERENCE                      TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+        -  currency-exchange   Deployment/currency-exchange   <unknown>/5%   1         3         1          13m
+2.  View Load
+    -  `kubectl top pods`
+    -  `kubectl top nodes`
+3.  Add restriction to avoid `<unknown>` cpu load   
+    -  resources.requests.cpu: 500m
+    -  `kubectl get hpa`
+        -  NAME                REFERENCE                      TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+        -  currency-exchange   Deployment/currency-exchange   0%/5%     1         3         1          40m
+4.  Load testing
+    -  `kubectl top pods`
+        -  NAME                                   CPU(cores)   MEMORY(bytes)
+        -  currency-conversion-5687c77bfc-wljzm   2m           213Mi
+        -  currency-exchange-7b458b4d85-x7862     2m           269Mi
+    -  1 thread curl
+    -  `watch -n 0.3 curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
+    -  playing with number of threads and request period we scale up/down number of pods
+    -  `kubectl get hpa`
+        -  NAME                REFERENCE                      TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+        -  currency-exchange   Deployment/currency-exchange   2%/5%     1         3         2          65m
+5.  Delete horizontal auto scaler
+    -  `kubectl delete hpa currency-exchange`    
 
 
 

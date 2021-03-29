@@ -9,7 +9,7 @@ metadata:
   namespace: default
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: currency-exchange
@@ -36,6 +36,9 @@ spec:
             httpGet:
               port: 8000
               path: /actuator/health/liveness
+          resources:
+            requests:
+              cpu: 500m
       restartPolicy: Always
 ---
 apiVersion: v1
