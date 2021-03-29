@@ -9,7 +9,7 @@ metadata:
   namespace: default
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+#  replicas: 1
   selector:
     matchLabels:
       app: currency-conversion
@@ -30,6 +30,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: currency-conversion
+          resources:
+            requests:
+              cpu: 1000m
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -55,3 +58,17 @@ metadata:
   name: currency-conversion
 data:
   EXCHANGE_SERVICE_HOST: http://currency-exchange:8000
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: currency-conversion
+  namespace: default
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: currency-conversion
+  targetCPUUtilizationPercentage: 50

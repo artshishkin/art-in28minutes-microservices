@@ -9,7 +9,7 @@ metadata:
   namespace: default
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+#  replicas: 1
   selector:
     matchLabels:
       app: currency-exchange
@@ -38,7 +38,7 @@ spec:
               path: /actuator/health/liveness
           resources:
             requests:
-              cpu: 500m
+              cpu: 1000m
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -57,3 +57,24 @@ spec:
     app: currency-exchange
   sessionAffinity: None
   type: LoadBalancer
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    autoscaling.alpha.kubernetes.io/conditions: '[{"type":"AbleToScale","status":"True","lastTransitionTime":"2021-03-29T16:24:24Z","reason":"ScaleDownStabilized","message":"recent
+      recommendations were higher than current one, applying the highest recent recommendation"},{"type":"ScalingActive","status":"True","lastTransitionTime":"2021-03-29T17:56:50Z","reason":"ValidMetricFound","message":"the
+      HPA was able to successfully calculate a replica count from cpu resource utilization
+      (percentage of request)"},{"type":"ScalingLimited","status":"False","lastTransitionTime":"2021-03-29T18:40:40Z","reason":"DesiredWithinRange","message":"the
+      desired count is within the acceptable range"}]'
+    autoscaling.alpha.kubernetes.io/current-metrics: '[{"type":"Resource","resource":{"name":"cpu","currentAverageUtilization":1,"currentAverageValue":"7m"}}]'
+  name: currency-exchange
+  namespace: default
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: currency-exchange
+  targetCPUUtilizationPercentage: 50

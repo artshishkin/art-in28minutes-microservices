@@ -622,9 +622,9 @@ management:
 5.  Delete horizontal auto scaler
     -  `kubectl delete hpa currency-exchange`    
 
+#####  Horizontal Pod Autoscaling (Config)
 
-
-
+-  `kubectl get hpa currency-exchange -o yaml >> currency-exchange-autoscaling.yaml`
 
 
 
