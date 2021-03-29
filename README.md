@@ -533,6 +533,11 @@ In order to run KubeCtl commands without `--kubeconfig` parameter we can set def
 -  `kubectl apply -f currency-conversion-deployment.yaml`
     -  Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
 
+#####  Creating Config Maps through Intellij
+
+-  in deployment config file add 3 hyphens `---`
+-  Ctrl+J -> kcm (Kubernetes ConfigMap)
+-  enter desired fields
 
 
 
