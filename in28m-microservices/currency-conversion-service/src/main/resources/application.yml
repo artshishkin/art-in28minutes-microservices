@@ -37,3 +37,6 @@ management:
       enabled: true
     readinessstate:
       enabled: true
+logging:
+  level:
+    net.shyshkin: debug

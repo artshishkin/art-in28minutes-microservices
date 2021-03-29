@@ -27,7 +27,7 @@ public class ExchangeController {
         String port = environment.getProperty("local.server.port");
         String appName = environment.getProperty("spring.application.name");
         String hostname = environment.getProperty("HOSTNAME");
-        String version = "v1-k8s";
+        String version = environment.getProperty("info.app.version");
 
         CurrencyExchange currencyExchange = service.find(from, to);
         currencyExchange.setEnvironment(String.format("%s %s %s %s ", port, appName, version, hostname));
