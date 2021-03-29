@@ -498,4 +498,9 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
 -  `watch -n 0.1 curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
     -  load balancer does not switch very often
 
+#####  Setting Default Configuration to Digital Ocean
+
+In order to run KubeCtl commands without `--kubeconfig` parameter we can set default config in Environment Variables
+-  KUBECONFIG = `c:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml`
+
                            
