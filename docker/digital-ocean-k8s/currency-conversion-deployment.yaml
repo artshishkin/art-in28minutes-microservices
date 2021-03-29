@@ -27,6 +27,9 @@ spec:
         - image: artarkatesoft/art-in28m-currency-conversion-service:0.0.1-k8s-SNAPSHOT
           imagePullPolicy: IfNotPresent
           name: art-in28m-currency-conversion-service
+          env:
+            - name: EXCHANGE_SERVICE_HOST
+              value: http://currency-exchange:8000
       restartPolicy: Always
 ---
 apiVersion: v1

@@ -503,4 +503,21 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
 In order to run KubeCtl commands without `--kubeconfig` parameter we can set default config in Environment Variables
 -  KUBECONFIG = `c:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml`
 
+#####  214. Step 22 - Creating Environment Variables to enable Microservice Communication
+
+1.  Set Environment Variable to Exchange host
+    -  Ranga uses Env.Variable `CURRENCY_EXCHANGE_URI`. I have created earlier property `exchange-service.host`.
+    -  So I will be using environment variable `EXCHANGE_SERVICE_HOST`. **But** with a port added (:8000).
+2.  Deploy config
+    -  `kubectl apply -f currency-conversion-deployment.yaml`
+    -  **OR**
+    -  By using Intellij Kubernetes plugin (makes the same).
+3.  Check everything is OK
+    -  `kubectl get po`
+    -  `kubectl logs currency-conversion-5969fb884b-x4xqj`    
+    -  `kubectl logs -f currency-conversion-5969fb884b-x4xqj` - to follow
+    -  from ubuntu terminal
+        -  `curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
+        -  all ok
+        
                            
