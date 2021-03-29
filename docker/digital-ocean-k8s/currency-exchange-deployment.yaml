@@ -25,6 +25,7 @@ spec:
     spec:
       containers:
         - image: artarkatesoft/art-in28m-currency-exchange-service:0.0.2-k8s-SNAPSHOT
+#        - image: DUMMY
           imagePullPolicy: IfNotPresent
           name: art-in28m-currency-exchange-service
       restartPolicy: Always

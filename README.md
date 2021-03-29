@@ -539,12 +539,28 @@ In order to run KubeCtl commands without `--kubeconfig` parameter we can set def
 -  Ctrl+J -> kcm (Kubernetes ConfigMap)
 -  enter desired fields
 
+#####  217. Step 25 - Exploring Microservices Deployments with Kubernetes
 
-
-
-
-
-
+1.  Show deployment history
+    -  `kubectl rollout history deployment currency-conversion`
+    -  `kubectl rollout history deployment currency-exchange`
+        -  REVISION  CHANGE-CAUSE
+        -  1         <none>
+        -  2         <none>
+2.  Deploy currency-exchange with DUMMY image
+    -  received `deployment.apps/currency-exchange configured`
+    -  `kubectl get pods`
+        -  currency-exchange-6c854bb7bc-qbwn9     0/1     **InvalidImageName**   0          71s
+    -  `kubectl rollout history deployment currency-exchange` -> was 2 now 3
+3.  Undoing deployment
+    -  one option is to change [currency-exchange-deployment.yaml](docker\digital-ocean-k8s\currency-exchange-deployment.yaml)
+    -  another option
+    -  `kubectl rollout undo deployment currency-exchange` - to previous revision
+    -  `kubectl rollout undo deployment currency-exchange --to-revision=2` - to revision 2
+4.  Downtime while deploying
+    -  `watch -n 0.1 curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
+    -  `kubectl apply -f currency-exchange-deployment.yaml`
+    -  in watch window we see 500 Error - for a short period of time
 
 
 
