@@ -491,7 +491,11 @@ This allows us to skip the Dockerfile and get a sensible Docker image automatica
     -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get all`
     -  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get svc --watch`
 
+#####  213. Step 21 - Playing with Kubernetes Declarative YAML Configuration
 
-
+-  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" apply -f currency-conversion-deployment.yaml`
+-  `kubectl --kubeconfig="C:\Users\Admin\.kube\my-first-k8s-cluster-kubeconfig.yaml" get svc --watch` - wait until currency-conversion receives External-IP
+-  `watch -n 0.1 curl http://68.183.240.180:8100/currency-conversion/from/USD/to/UAH/quantity/11.21`
+    -  load balancer does not switch very often
 
                            
