@@ -38,6 +38,8 @@ spec:
               path: /actuator/health/liveness
           resources:
             requests:
+              cpu: 500m
+            limits:
               cpu: 1000m
       restartPolicy: Always
 ---

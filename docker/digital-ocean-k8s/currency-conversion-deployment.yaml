@@ -32,6 +32,8 @@ spec:
                 name: currency-conversion
           resources:
             requests:
+              cpu: 500m
+            limits:
               cpu: 1000m
       restartPolicy: Always
 ---

@@ -626,7 +626,9 @@ management:
 
 -  `kubectl get hpa currency-exchange -o yaml >> currency-exchange-autoscaling.yaml`
 
+#####  Load Testing
 
+-  `kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://currency-conversion:8100/currency-conversion/from/USD/to/UAH/quantity/11.21; done"`
 
 
 
